@@ -1,0 +1,15 @@
+.recipes_list_image_link {
+    display: flex;
+    width: 50%;
+    border: 1px gray solid;
+    text-decoration: none;
+}
+
+.recipes_list_information {
+    display: flex;
+    flex-direction: column;
+}
+
+.recipes_list_image {
+    margin-left: auto;
+}

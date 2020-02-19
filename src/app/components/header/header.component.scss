@@ -1,0 +1,22 @@
+:host{
+    width: 100%;
+}
+
+.header_nav {
+    display: flex;
+    width: 100%;
+}
+
+.header_link_brand {
+    color: blue;
+    font-size: 1.5em;
+}
+
+.header_menu_links {
+    font-size: 1em;
+    display: flex;
+}
+
+.header_dropdown_list {
+    margin-left: auto;
+}
