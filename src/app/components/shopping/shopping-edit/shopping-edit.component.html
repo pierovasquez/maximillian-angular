@@ -1,9 +1,9 @@
 <div class="inputs-box">
-  <label>Name :<input type="text"> </label>
-  <label>Amount: <input type="number"></label>
+  <label>Name :<input type="text" #nameInput> </label>
+  <label>Amount: <input type="number" #amountInput></label>
 </div>
 <div class="buttons-box">
-  <button class="shopping_edit_add_button" type="submit"><span>Add</span></button>
+  <button class="shopping_edit_add_button" type="submit" (click)="onAddItem()"><span>Add</span></button>
   <button class="shopping_edit_delete_button" type="button"><span>Delete</span></button>
   <button class="shopping_edit_clear_button" type="button"><span>Clear</span></button>
 </div>

@@ -1,4 +1,4 @@
-<app-shopping-edit></app-shopping-edit>
+<app-shopping-edit (ingredientAdded)="onNewIngredientAdded($event)"></app-shopping-edit>
 <div class="shopping_list_container">
   <a href="#" class="shopping_list_link" *ngFor="let ingredient of ingredients">
     {{ingredient.name}} ({{ingredient.amount}})
