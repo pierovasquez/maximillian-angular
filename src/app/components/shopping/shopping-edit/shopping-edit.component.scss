@@ -1,0 +1,18 @@
+.inputs-box {
+    display: flex;
+}
+
+.buttons-box {
+    display: flex;
+    justify-content: flex-start;
+
+    width: 20%;
+}
+
+.shopping_edit_delete_button {
+    background-color: red;
+}
+
+.shopping_edit_clear_button {
+    background-color: #007bff;
+}

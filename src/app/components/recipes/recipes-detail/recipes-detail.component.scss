@@ -1,0 +1,32 @@
+$subtle-white: #f9f9f9;
+$subtle-grey: #f2f2f2;
+
+
+.recipes_detail_button {
+    margin: 0 auto;
+    background-color: #007bff;
+}
+
+.dropdown_content {
+  display: none;
+  z-index: 1;
+
+  a {
+    text-decoration: none;
+    color: black;
+    background-color: $subtle-white;
+    padding: 15px;
+
+    &:hover {
+        background-color: $subtle-grey;
+    }
+  }
+
+}
+
+.dropdown:hover .dropdown_content {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  position: absolute;
+}
