@@ -1,4 +1,4 @@
-<img src="" alt="" class="recipes_detail_img">
+<img [src]="clickedRecipe.imagePath" alt="" class="recipes_detail_img">
 
 <h1>Recipe Name</h1>
 <div class="dropdown">
@@ -13,9 +13,9 @@
 
 
 <div class="recipe_detail_description">
-  Description
+  Description = {{clickedRecipe?.name}}
 </div>
 
 <div class="recipe_detail_ingredients">
-  Ingredients
+  Ingredients = {{clickedRecipe?.description}}
 </div>
