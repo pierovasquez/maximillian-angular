@@ -7,6 +7,10 @@ $subtle-grey: #f2f2f2;
     background-color: #007bff;
 }
 
+.dropdown {
+  width: fit-content;
+}
+
 .dropdown_content {
   display: none;
   z-index: 1;
@@ -29,4 +33,20 @@ $subtle-grey: #f2f2f2;
   flex-direction: column;
   width: 200px;
   position: absolute;
+}
+
+.recipes_detail_ingredients_container {
+
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+
+.recipes_detail_ingredients_link {
+  cursor: pointer;
+  text-decoration: none;
+  color: black;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 3%;
+}
 }

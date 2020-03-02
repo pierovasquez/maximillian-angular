@@ -19,3 +19,9 @@
 <div class="recipe_detail_ingredients">
   Ingredients = {{clickedRecipe?.description}}
 </div>
+
+<div class="recipes_detail_ingredients_container">
+  <a href="#" class="recipes_detail_ingredients_link" *ngFor="let ingredient of clickedRecipe.ingredients">
+    {{ingredient.name}} ({{ingredient.amount}})
+  </a>
+</div>
