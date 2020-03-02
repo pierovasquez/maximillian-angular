@@ -11,6 +11,7 @@ import { RecipesDetailComponent } from './components/recipes/recipes-detail/reci
 import { ShoppingListComponent } from './components/shopping/shopping-list/shopping-list.component';
 import { ShoppingEditComponent } from './components/shopping/shopping-edit/shopping-edit.component';
 import { RecipesItemComponent } from './components/recipes/recipes-list/recipes-item/recipes-item.component';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { RecipesItemComponent } from './components/recipes/recipes-list/recipes-
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]
