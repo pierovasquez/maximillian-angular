@@ -5,7 +5,7 @@
   <button class="recipes_detail_button"><span>Manage Recipe <i class="fa fa-sort-down"></i></span></button>
 
   <div class="dropdown_content">
-    <a href="">To Shopping List</a>
+    <a (click)="onAddToShoppingList()">To Shopping List</a>
     <a href="">Edit Recipe</a>
     <a href="">Delete Recipe</a>
   </div>
@@ -18,4 +18,10 @@
 
 <div class="recipe_detail_ingredients">
   Ingredients = {{clickedRecipe?.description}}
+</div>
+
+<div class="recipes_detail_ingredients_container">
+  <a href="#" class="recipes_detail_ingredients_link" *ngFor="let ingredient of clickedRecipe.ingredients">
+    {{ingredient.name}} ({{ingredient.amount}})
+  </a>
 </div>
