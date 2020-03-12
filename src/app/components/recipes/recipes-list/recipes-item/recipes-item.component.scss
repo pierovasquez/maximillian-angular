@@ -1,12 +1,22 @@
+@import '../../../../shared/styles/shared-colors.scss';
+
 
 .recipes_list_image_link {
     display: flex;
     align-items: center;
+    cursor: pointer;
   
     margin: 0 0 0 3%;
     width: 100%;
     border: 1px solid #ccc;
     text-decoration: none;
+
+    &:hover {
+      background-color: $subtle-grey;
+    }
+  }
+  .active {
+    background-color: blue;
   }
   
   .recipes_list_information {

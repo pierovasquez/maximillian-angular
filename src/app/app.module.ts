@@ -14,6 +14,8 @@ import { RecipesItemComponent } from './components/recipes/recipes-list/recipes-
 import { SharedModule } from './shared/shared.module';
 import { RecipesService } from './components/recipes/recipes.service';
 import { ShoppingListService } from './components/shopping/shopping-list/shopping-list.service';
+import { RecipeStartComponent } from './components/recipes/recipe-start/recipe-start.component';
+import { RecipeEditComponent } from './components/recipes/recipe-edit/recipe-edit.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { ShoppingListService } from './components/shopping/shopping-list/shoppin
     RecipesDetailComponent,
     ShoppingListComponent,
     ShoppingEditComponent,
-    RecipesItemComponent
+    RecipesItemComponent,
+    RecipeStartComponent,
+    RecipeEditComponent
   ],
   imports: [
     BrowserModule,

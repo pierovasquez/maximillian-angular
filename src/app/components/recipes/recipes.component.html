@@ -1,6 +1,2 @@
 <app-recipes-list (recipeLoaded)="loadRecipeDetail($event)" ></app-recipes-list>
-<app-recipes-detail *ngIf="clickedRecipe; else infoText" [clickedRecipe]="clickedRecipe"></app-recipes-detail>
-
-<ng-template #infoText>
-    <p>Please select a Recipe!</p>
-</ng-template>
+<router-outlet></router-outlet>

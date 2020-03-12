@@ -1,4 +1,4 @@
-<a (click)="onRecipeSelected()" class="recipes_list_image_link">
+<a [routerLink]="[index]" routerLinkActive="active" class="recipes_list_image_link">
     <div class="recipes_list_information">
         <h4>{{recipe.name}}</h4>
         <p>{{recipe.description}}</p>

@@ -7,19 +7,9 @@ import { RecipesService } from '../../recipes.service';
   templateUrl: './recipes-item.component.html',
   styleUrls: ['./recipes-item.component.scss']
 })
-export class RecipesItemComponent implements OnInit {
+export class RecipesItemComponent {
 
   @Input() recipe: Recipe;
-
-  constructor(
-    private recipeService: RecipesService
-  ) { }
-
-  ngOnInit() {
-  }
-
-  onRecipeSelected() {
-    this.recipeService.recipeSelected.emit(this.recipe);
-  }
+  @Input() index: number;
 
 }

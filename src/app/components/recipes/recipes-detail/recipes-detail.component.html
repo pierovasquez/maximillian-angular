@@ -1,4 +1,4 @@
-<img [src]="clickedRecipe.imagePath" alt="" class="recipes_detail_img">
+<img [src]="recipe.imagePath" alt="" class="recipes_detail_img">
 
 <h1>Recipe Name</h1>
 <div class="dropdown">
@@ -6,22 +6,22 @@
 
   <div class="dropdown_content">
     <a (click)="onAddToShoppingList()">To Shopping List</a>
-    <a href="">Edit Recipe</a>
-    <a href="">Delete Recipe</a>
+    <a >Edit Recipe</a>
+    <a >Delete Recipe</a>
   </div>
 </div>
 
 
 <div class="recipe_detail_description">
-  Description = {{clickedRecipe?.name}}
+  Description = {{recipe?.name}}
 </div>
 
 <div class="recipe_detail_ingredients">
-  Ingredients = {{clickedRecipe?.description}}
+  Ingredients = {{recipe?.description}}
 </div>
 
 <div class="recipes_detail_ingredients_container">
-  <a href="#" class="recipes_detail_ingredients_link" *ngFor="let ingredient of clickedRecipe.ingredients">
+  <a class="recipes_detail_ingredients_link" *ngFor="let ingredient of recipe.ingredients">
     {{ingredient.name}} ({{ingredient.amount}})
   </a>
 </div>
