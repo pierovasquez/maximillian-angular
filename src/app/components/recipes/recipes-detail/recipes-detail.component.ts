@@ -27,8 +27,7 @@ export class RecipesDetailComponent implements OnInit, OnDestroy {
     this.route.paramMap.pipe(
       map(params => params.get('id')),
       tap(id => this.id = +id),
-      map(id => this.recipeService.getRecipe(+id)),
-      takeUntil(this.ngUnsubscribe)
+      map(id => this.recipeService.getRecipe(+id))
     ).subscribe((res: Recipe) => this.recipe = res);
   }
 
@@ -41,4 +40,8 @@ export class RecipesDetailComponent implements OnInit, OnDestroy {
     this.recipeService.addIngredientsToShoppingList(this.recipe.ingredients);
   }
 
+  onEditRecipe() {
+    // this.router.navigate(['edit'], { relativeTo: this.route });
+    this.router.navigate(['../', this.id, 'edit'], { relativeTo: this.route });
+  }
 }

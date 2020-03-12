@@ -1,2 +1,2 @@
-<button class="recipes_list_button"><span>New Recipe</span></button>
+<button class="recipes_list_button" (click)="onNewRecipe()"><span>New Recipe</span></button>
 <app-recipes-item *ngFor="let recipeEl of recipes; let i = index" [recipe]="recipeEl" [index]="i"></app-recipes-item>
