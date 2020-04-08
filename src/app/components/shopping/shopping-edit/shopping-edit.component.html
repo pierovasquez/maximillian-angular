@@ -1,9 +1,28 @@
-<div class="inputs-box">
-  <label>Name :<input type="text" #nameInput> </label>
-  <label>Amount: <input type="number" #amountInput></label>
-</div>
-<div class="buttons-box">
-  <button class="shopping_edit_add_button" type="submit" (click)="onAddItem()"><span>Add</span></button>
-  <button class="shopping_edit_delete_button" type="button"><span>Delete</span></button>
-  <button class="shopping_edit_clear_button" type="button"><span>Clear</span></button>
-</div>
+<form (ngSubmit)="onAddItem(shoppingEditForm)" #shoppingEditForm="ngForm">
+  <div class="inputs-box">
+    <label>
+      Name:
+      <input 
+        type="text"
+        id="name"
+        name="name"
+        ngModel
+        required>
+    </label>
+    <label>Amount:
+      <input 
+        type="number"
+        id="amount"
+        name="amount"
+        ngModel
+        pattern="^[1-9]+[0-9]*$"
+        required>
+      </label>
+  </div>
+  <div class  ="buttons-box">
+    <button class="shopping_edit_add_button" type="submit"
+      [disabled]="!shoppingEditForm.valid"><span>{{editMode ? 'Update': 'Add'}}</span></button>
+    <button class="shopping_edit_delete_button" *ngIf="editMode" (click)="onDeleteItem()" type="button"><span>Delete</span></button>
+    <button class="shopping_edit_clear_button" (click)="onClear()" type="button"><span>Clear</span></button>
+  </div>
+</form>

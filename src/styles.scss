@@ -9,7 +9,7 @@ body {
 }
 
 button {
-  margin: 30px auto;
+  margin: 15px auto;
   padding: 0;
 
   overflow: hidden;
@@ -51,6 +51,10 @@ button {
   }
 }
 
+input[type=text], input[type=number], textarea {
+  font-family: Roboto, serif;
+  font-size: 20px;
+}
 
 input[type=text], input[type=number], select, textarea {
   padding: 12px;
