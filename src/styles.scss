@@ -44,6 +44,8 @@ button {
     transform: translate(-50%, -50%);
   }
 
+
+
   span {
     display: block;
     padding: 12px 24px;
@@ -51,14 +53,24 @@ button {
   }
 }
 
-input[type=text], input[type=number], textarea {
+input[type=text],
+input[type=number],
+textarea {
   font-family: Roboto, serif;
   font-size: 20px;
 }
 
-input[type=text], input[type=number], select, textarea {
+input[type=text],
+input[type=number],
+select,
+textarea {
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 4px;
   resize: vertical;
+}
+
+input.ng-invalid.ng-touched,
+textarea.ng-invalid.ng-touched {
+  border: 1px solid red;
 }

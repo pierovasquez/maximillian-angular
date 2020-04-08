@@ -2,6 +2,14 @@
     width: 40%;
 }
 
+button:disabled {
+    background-color: #dddddd;
+}
+
+.recipe_edit_cancel_button {
+    background-color: red;
+}
+
 .recipe_edit_form{
     width: 100%;
     display: flex;
