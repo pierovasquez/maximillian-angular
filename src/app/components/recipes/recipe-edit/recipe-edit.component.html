@@ -2,16 +2,16 @@
   <div class="recipe_edit_form">
     <div class="recipe_edit_form_buttons">
       <button type="submit" [disabled]="!recipeForm.valid" class="recipe_edit_submit_button"><span>Save</span></button>
-      <button type="button" class="recipe_edit_cancel_button"><span>Cancel</span></button>
+      <button type="button" (click)="onCancel()" class="recipe_edit_cancel_button"><span>Cancel</span></button>
     </div>
 
     <label for="nameForm"> Name
       <input type="text" formControlName="name" id="nameForm" class="recipe_edit_name">
     </label>
     <label for="url"> Image URL
-      <input type="text" formControlName="imagePath" id="url" class="recipe_edit_image_url">
+      <input type="text" formControlName="imagePath" id="url" class="recipe_edit_image_url" #imagePath>
     </label>
-    <img [src]="">
+    <img class="recipe_edit_image" [src]="imagePath.value">
     <label for="description"> Description
       <textarea formControlName="description" name="description" id="description" cols="30" rows="10"></textarea>
     </label>
@@ -22,7 +22,7 @@
         <input formControlName="name" type="text" class="recipe_edit_name">
         <input formControlName="amount" type="number" class="recipe_edit_number">
     
-        <button type="button" class="recipe_edit_x_button"><span>X</span></button>
+        <button type="button" class="recipe_edit_x_button" (click)="onDeleteIngredient(i)"><span>X</span></button>
     </div>
     
   </div>
