@@ -14,6 +14,8 @@ export class RecipesListComponent implements OnInit, OnDestroy {
   recipes: Recipe[];
   private recipeSubscription: Subscription;
 
+  filteredText = '';
+
   constructor(
     private recipesService: RecipesService,
     private router: Router,
@@ -25,7 +27,7 @@ export class RecipesListComponent implements OnInit, OnDestroy {
     this.recipes = this.recipesService.getRecipes();
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.recipeSubscription.unsubscribe();
   }
 
