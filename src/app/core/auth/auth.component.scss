@@ -1,0 +1,25 @@
+:host {
+  display: grid;
+  place-content: center;
+  height: 100vh;
+}
+
+
+.card {
+  margin: 0 5em;
+
+  &__error {
+    color: red;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__input {}
+}
+
+button:disabled {
+  background-color: #dddddd;
+}

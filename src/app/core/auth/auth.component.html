@@ -1,0 +1,36 @@
+ <div class="card">
+   <div class="card__error" *ngIf="error">
+     <p>{{error}}</p>
+   </div>
+   <app-loading-spinner *ngIf="isLoading" style="text-align: center;"></app-loading-spinner>
+   <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)" class="card__form" *ngIf="!isLoading">
+     <div>
+       <label for="email"> E-mail
+         <input 
+          class="card__input" 
+          type="email" 
+          id="email" 
+          ngModel 
+          name="email" 
+          required email>
+       </label>
+     </div>
+     <div>
+       <label for="password">Password
+         <input 
+          class="card__input" 
+          type="password" 
+          id="password" 
+          ngModel 
+          name="password" 
+          required
+          minlength="6">
+       </label>
+     </div>
+     <div>
+       <button type="submit" [disabled]="!authForm.valid"><span>{{ isLoginMode ? 'Login' : 'Sign Up'}}</span></button> |
+       <button type="button" (click)="onSwitchMode()"><span>Switch to
+           {{isLoginMode ? 'Sign Up': 'Login'}}</span></button>
+     </div>
+   </form>
+ </div>

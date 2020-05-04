@@ -1,10 +1,13 @@
 <nav class="header_nav">
   <div class="header_menu">
     <ul>
-      <li><a>Recipe Book</a></li>
-      <li routerLinkActive="active" [routerLink]="['/recipes']"><a >Recipes</a></li>
+      <li routerLinkActive="active" *ngIf="isAuthenticated" [routerLink]="['/recipes']"><a >Recipes</a></li>
+      <li [routerLink]="['/auth']" *ngIf="!isAuthenticated"><a>Authenticate</a></li>
       <li routerLinkActive="active" [routerLink]="['/shopping-list']"><a >Shopping List</a></li>
-      <li>
+      <li *ngIf="isAuthenticated">
+        <a>Logout</a>
+      </li>
+      <li *ngIf="isAuthenticated">
         <a>Manage <i class="fa fa-sort-down"></i></a>
         <ul>
           <li><a (click)="onSaveData()">Save Data</a></li>

@@ -1,16 +1,19 @@
 import { NgModule } from '@angular/core';
-import { DropdownDirective } from './dropdown/dropdown.directive';
+import { DropdownDirective } from './directives/dropdown/dropdown.directive';
 import { FilterRecipePipe } from './pipes/filter-recipe.pipe';
+import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 
 @NgModule({
     declarations: [
         DropdownDirective,
-        FilterRecipePipe
+        FilterRecipePipe,
+        LoadingSpinnerComponent
     ],
     imports: [],
     exports: [
         DropdownDirective,
-        FilterRecipePipe
+        FilterRecipePipe,
+        LoadingSpinnerComponent
     ]
 })
 export class SharedModule { }
