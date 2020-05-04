@@ -5,7 +5,7 @@
       <li [routerLink]="['/auth']" *ngIf="!isAuthenticated"><a>Authenticate</a></li>
       <li routerLinkActive="active" [routerLink]="['/shopping-list']"><a >Shopping List</a></li>
       <li *ngIf="isAuthenticated">
-        <a>Logout</a>
+        <a (click)="onLogOut()">Logout</a>
       </li>
       <li *ngIf="isAuthenticated">
         <a>Manage <i class="fa fa-sort-down"></i></a>

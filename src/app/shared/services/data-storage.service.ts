@@ -27,22 +27,10 @@ export class DataStorageService {
     }
 
     fetchRecipes() {
-        return this.authService.user.pipe(
-            take(1),
-            // EXHAUSTMAP ->  Espera a que el primer observable (el usuario) se complete lo que pasara una vez tengamos el usuario
-            // ya que la funcion take se desuscribe justo despues de que llegue un usuario por lo tanto, se completa.
-            exhaustMap(user => {
-                return this.http.get<Recipe[]>('https://maximilian-course.firebaseio.com/recipes.json', {
-                    params: new HttpParams().set('auth', user.token)
-                });
-            }),
-            map(recipes => recipes.map(recipe => ({ ...recipe, ingredients: recipe.ingredients ? recipe.ingredients : [] }))),
-            tap(recipes => this.recipeService.setRecipes(recipes))
-        );
-        // return this.http.get<Recipe[]>('https://maximilian-course.firebaseio.com/recipes.json')
-        //     .pipe(
-        //         map(recipes => recipes.map(recipe => ({ ...recipe, ingredients: recipe.ingredients ? recipe.ingredients : [] }))),
-        //         tap(recipes => this.recipeService.setRecipes(recipes))
-        //     );
+        return this.http.get<Recipe[]>('https://maximilian-course.firebaseio.com/recipes.json')
+            .pipe(
+                map(recipes => recipes.map(recipe => ({ ...recipe, ingredients: recipe.ingredients ? recipe.ingredients : [] }))),
+                tap(recipes => this.recipeService.setRecipes(recipes))
+            );
     }
 }
