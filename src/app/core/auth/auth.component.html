@@ -1,7 +1,13 @@
  <div class="card">
-   <div class="card__error" *ngIf="error">
+   <!-- 
+    Muestra de mensaje de error 1 
+    <div class="card__error" *ngIf="error">
      <p>{{error}}</p>
-   </div>
+   </div> -->
+   <!--
+     Muestra de mensaje de error 2 
+     <app-alert-model [message]="error" *ngIf="error" (closeAlert)="onHandleError()"></app-alert-model> 
+    -->
    <app-loading-spinner *ngIf="isLoading" style="text-align: center;"></app-loading-spinner>
    <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)" class="card__form" *ngIf="!isLoading">
      <div>
