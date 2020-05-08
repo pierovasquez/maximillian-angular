@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ComponentFactoryResolver } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthUser } from 'src/app/models/user.model';
 import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
 import { AuthResponseData, LoginResponseData } from 'src/app/models/authResponse.model';
 import { Router } from '@angular/router';
+import { AlertModelComponent } from 'src/app/shared/components/alert-model/alert-model.component';
 
 @Component({
   selector: 'app-auth',
@@ -19,7 +20,8 @@ export class AuthComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private componentFactoryResolver: ComponentFactoryResolver
   ) { }
 
   ngOnInit() { }
@@ -40,6 +42,7 @@ export class AuthComponent implements OnInit {
         errorMessage => {
           console.log(errorMessage);
           this.error = errorMessage;
+          this.showErrorAlert(errorMessage);
           this.isLoading = false;
         });
       form.reset();
@@ -58,6 +61,10 @@ export class AuthComponent implements OnInit {
     } else {
       return this.authService.login(newUser);
     }
+  }
+
+  private showErrorAlert(message: string) {
+    const alertCmpFactory = this.componentFactoryResolver.resolveComponentFactory(AlertModelComponent);
   }
 
   onSwitchMode() {
