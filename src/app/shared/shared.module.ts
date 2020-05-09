@@ -8,17 +8,13 @@ import { PlaceholderDirective } from './directives/placeholder/placeholder.direc
 @NgModule({
     declarations: [
         DropdownDirective,
-        PlaceholderDirective,
         FilterRecipePipe,
-        LoadingSpinnerComponent,
         AlertModelComponent
     ],
     imports: [],
     exports: [
         DropdownDirective,
-        PlaceholderDirective,
         FilterRecipePipe,
-        LoadingSpinnerComponent,
         AlertModelComponent
     ]
 })

@@ -5,7 +5,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './components/header/header.component';
+import { HeaderComponent } from './core/header/header.component';
 import { RecipesComponent } from './components/recipes/recipes.component';
 import { RecipesListComponent } from './components/recipes/recipes-list/recipes-list.component';
 import { RecipesDetailComponent } from './components/recipes/recipes-detail/recipes-detail.component';
@@ -20,19 +20,12 @@ import { RecipeEditComponent } from './components/recipes/recipe-edit/recipe-edi
 import { CoreModule } from './core/core.module';
 import { AuthService } from './core/auth/auth.service';
 import { AuthInterceptorService } from './core/auth/auth-interceptor.service';
+import { RecipesModule } from './components/recipes/recipes.module';
+import { ShoppingModule } from './components/shopping/shopping.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    HeaderComponent,
-    RecipesComponent,
-    RecipesListComponent,
-    RecipesDetailComponent,
-    ShoppingListComponent,
-    ShoppingEditComponent,
-    RecipesItemComponent,
-    RecipeStartComponent,
-    RecipeEditComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +34,8 @@ import { AuthInterceptorService } from './core/auth/auth-interceptor.service';
     FormsModule,
     ReactiveFormsModule,
     CoreModule,
-    SharedModule
+    RecipesModule,
+    ShoppingModule,
   ],
   providers: [
     RecipesService,

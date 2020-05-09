@@ -1,4 +1,4 @@
-import { Component, OnInit, ComponentFactoryResolver } from '@angular/core';
+import { Component, OnInit, ComponentFactoryResolver, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthUser } from 'src/app/models/user.model';
 import { AuthService } from './auth.service';
@@ -6,6 +6,8 @@ import { Observable } from 'rxjs';
 import { AuthResponseData, LoginResponseData } from 'src/app/models/authResponse.model';
 import { Router } from '@angular/router';
 import { AlertModelComponent } from 'src/app/shared/components/alert-model/alert-model.component';
+import { PlaceholderDirective } from 'src/app/shared/directives/placeholder/placeholder.directive';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-auth',
@@ -13,6 +15,8 @@ import { AlertModelComponent } from 'src/app/shared/components/alert-model/alert
   styleUrls: ['./auth.component.scss']
 })
 export class AuthComponent implements OnInit {
+
+  @ViewChild(PlaceholderDirective, {static: false}) alertHost: PlaceholderDirective;
 
   public isLoginMode = true;
   public isLoading = false;
@@ -64,7 +68,18 @@ export class AuthComponent implements OnInit {
   }
 
   private showErrorAlert(message: string) {
+    // Al parecer, no hace falta que el modulo de core tenga importado el componente
+    // AlertComponent para poder utilizarlo en codigo.
+    // Por otra parte, para poder utilizar el viewChild con alertHost, si que hace falta.
     const alertCmpFactory = this.componentFactoryResolver.resolveComponentFactory(AlertModelComponent);
+    const hostViewContainerRef = this.alertHost.viewContainerRef;
+    hostViewContainerRef.clear();
+
+    const componentRef = hostViewContainerRef.createComponent(alertCmpFactory);
+    componentRef.instance.message = message;
+    componentRef.instance.closeAlert.pipe(take(1)).subscribe(() => {
+      hostViewContainerRef.clear();
+    });
   }
 
   onSwitchMode() {
