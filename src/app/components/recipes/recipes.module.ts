@@ -22,7 +22,6 @@ import { RecipesRoutingModule } from './recipes-routing.module';
     RecipeEditComponent
   ],
   imports: [
-    CommonModule,
     RecipesRoutingModule,
     FormsModule,
     ReactiveFormsModule,

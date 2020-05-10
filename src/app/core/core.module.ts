@@ -6,26 +6,37 @@ import { SharedModule } from '../shared/shared.module';
 import { AlertModelComponent } from '../shared/components/alert-model/alert-model.component';
 import { HeaderComponent } from './header/header.component';
 import { RouterModule } from '@angular/router';
-import { LoadingSpinnerComponent } from '../shared/components/loading-spinner/loading-spinner.component';
 import { PlaceholderDirective } from '../shared/directives/placeholder/placeholder.directive';
+import { RecipesService } from '../components/recipes/recipes.service';
+import { ShoppingListService } from '../components/shopping/shopping-list/shopping-list.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptorService } from './auth/auth-interceptor.service';
 
 @NgModule({
   declarations: [
     AuthComponent,
     PlaceholderDirective,
-    HeaderComponent,
-    LoadingSpinnerComponent
+    HeaderComponent
   ],
   imports: [
-    CommonModule,
     FormsModule,
     RouterModule.forChild([
       {path: 'auth', component: AuthComponent}
-    ])
+    ]),
+    SharedModule
   ],
   exports: [
     AuthComponent,
     HeaderComponent
+  ],
+  providers: [
+    RecipesService,
+    ShoppingListService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true
+    }
   ],
   // Es un array de componentes que solo se crearan eventualmente sin un selector o sin el uso de rutas.
   entryComponents: [
