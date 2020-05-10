@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 // Cuando provees servicios en modulos lazy loading. Estos en vez de compartir la misma instancia por
 // toda la aplicacion, los componentes del modulo lazy, tendran una diferente.

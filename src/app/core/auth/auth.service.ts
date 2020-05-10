@@ -5,6 +5,7 @@ import { AuthResponseData, LoginResponseData } from 'src/app/models/authResponse
 import { Observable, of, throwError, Subject, BehaviorSubject } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,7 @@ export class AuthService {
   signUp(authUser: AuthUser): Observable<AuthResponseData> {
     authUser.returnSecureToken = true;
     // tslint:disable-next-line: max-line-length
-    return this.http.post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCtwcWtjBexxifgeZ5-D-tPp_WQHlwZVjY', authUser)
+    return this.http.post<AuthResponseData>(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.firebaseAPIKey}`, authUser)
       .pipe(
         catchError(this.handleError),
         tap(resData => this.handleAuthentication(resData))
@@ -61,7 +62,7 @@ export class AuthService {
   login(user: AuthUser) {
     user.returnSecureToken = true;
     // tslint:disable-next-line: max-line-length
-    return this.http.post<LoginResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCtwcWtjBexxifgeZ5-D-tPp_WQHlwZVjY', user)
+    return this.http.post<LoginResponseData>(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.firebaseAPIKey}`, user)
       .pipe(
         catchError(this.handleError),
         // Si intentamos hacer el mismo comportamiento con la funcion en el cathError, el subject User se volver undefined y dara errores.
