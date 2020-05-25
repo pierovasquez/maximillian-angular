@@ -4,6 +4,9 @@ import { ShoppingListService } from '../shopping-list/shopping-list.service';
 import { NgForm } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { ShoppingListInitialState } from '../shopping-list/store/shopping-list.reducer';
+import * as ShoppingListActions from '../shopping-list/store/shopping-list.actions';
 
 @Component({
   selector: 'app-shopping-edit',
@@ -21,7 +24,8 @@ export class ShoppingEditComponent implements OnInit {
   public editedItemIndex: number;
   public editedItem: Ingredient;
   constructor(
-    private shoppingListService: ShoppingListService
+    private shoppingListService: ShoppingListService,
+    private store: Store<{shoppingList: ShoppingListInitialState}>
   ) { }
 
   ngOnInit() {
@@ -40,7 +44,9 @@ export class ShoppingEditComponent implements OnInit {
     const value = form.value;
     const newIngredient: Ingredient = new Ingredient(value.name, value.amount);
     if (!this.editMode) {
-      this.shoppingListService.addIngredient(newIngredient);
+      // this.shoppingListService.addIngredient(newIngredient);
+      // Utilizamos dispatch para asociar la accion que queremos que ejecute ngrx
+      this.store.dispatch( new ShoppingListActions.AddIngredient(newIngredient));
     } else {
       this.shoppingListService.updateIngredient(this.editedItemIndex, newIngredient);
     }

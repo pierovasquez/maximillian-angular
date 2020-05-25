@@ -16,13 +16,18 @@ const initialState: ShoppingListInitialState = {
  * @param state that's the current state before it was changed. If there is no state param, it will take the initialState object
  * @param action The action is that triggers the reducer and in the end, the state update.
  */
-export function shoppingListReducer(state = initialState, action: ShoppingListActions.AddIngredient): ShoppingListInitialState {
+export function shoppingListReducer(state = initialState, action: ShoppingListActions.ShoppingListActions): ShoppingListInitialState {
 
   switch (action.type) {
     case ShoppingListActions.ADD_INGREDIENT:
       return {
         ...state,
-        ingredients: [...state.ingredients, action.payload]
+        ingredients: [...state.ingredients, (action.payload as Ingredient)]
+      };
+    case ShoppingListActions.ADD_INGREDIENTS:
+      return {
+        ...state,
+        ingredients: [...state.ingredients, ...(action.payload as Ingredient[])]
       };
     default:
       return state;
