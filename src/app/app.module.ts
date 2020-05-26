@@ -8,6 +8,8 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { StoreModule } from '@ngrx/store';
 import * as fromApp from './core/store/app.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { AuthEffects } from './core/auth/store/auth.effects';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import * as fromApp from './core/store/app.reducer';
     HttpClientModule,
     CoreModule,
     // Tenemos que indicar que reducers estamos utilizando. El nombre 'shoppingList' es totalmente custom.
-    StoreModule.forRoot(fromApp.appReducer)
+    StoreModule.forRoot(fromApp.appReducer),
+    // Se pasara un array de los efectos (@Effects())
+    EffectsModule.forRoot([AuthEffects])
   ],
   bootstrap: [AppComponent]
 })

@@ -59,7 +59,7 @@ export class AuthService {
     const expirationDate = new Date(new Date().getTime() + +responseData.expiresIn * 1000);
     const authuser = new User(responseData.email, responseData.localId, responseData.idToken, expirationDate);
     // this.user.next(authuser);
-    this.store.dispatch(new authActions.Login(authuser));
+    this.store.dispatch(new authActions.AuthenticateSuccess(authuser));
     this.autoLogOut(+responseData.expiresIn * 1000);
     localStorage.setItem('userData', JSON.stringify(authuser));
   }
@@ -103,7 +103,7 @@ export class AuthService {
     // Si el token sigue siendo valido, (la fecha del token no es mayor a la fecha actual), logeara el usuario.
     if (loadedUser.token) {
       // this.user.next(loadedUser);
-      this.store.dispatch(new authActions.Login(loadedUser));
+      this.store.dispatch(new authActions.AuthenticateSuccess(loadedUser));
       const expirationDuration = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
       this.autoLogOut(expirationDuration);
     }
