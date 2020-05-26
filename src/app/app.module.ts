@@ -7,7 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { StoreModule } from '@ngrx/store';
-import { shoppingListReducer } from './components/shopping/shopping-list/store/shopping-list.reducer';
+import * as fromApp from './core/store/app.reducer';
 
 @NgModule({
   declarations: [
@@ -20,7 +20,7 @@ import { shoppingListReducer } from './components/shopping/shopping-list/store/s
     HttpClientModule,
     CoreModule,
     // Tenemos que indicar que reducers estamos utilizando. El nombre 'shoppingList' es totalmente custom.
-    StoreModule.forRoot({shoppingList: shoppingListReducer})
+    StoreModule.forRoot(fromApp.appReducer)
   ],
   bootstrap: [AppComponent]
 })

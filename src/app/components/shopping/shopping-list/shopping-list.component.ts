@@ -3,8 +3,8 @@ import { Ingredient } from 'src/app/models/ingredients.model';
 import { ShoppingListService } from './shopping-list.service';
 import { Subject, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import * as fromShoppingList from './store/shopping-list.reducer';
 import * as ShoppingListActions from './store/shopping-list.actions';
+import * as fromApp from '../../../core/store/app.reducer';
 @Component({
   selector: 'app-shopping-list',
   templateUrl: './shopping-list.component.html',
@@ -21,7 +21,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     private shoppingListService: ShoppingListService,
     // Si miramos la funcion reducer de shopping-list, encontramos que devuelve el initialState.
     // Este es un objeto que tiene una propiedad que se llama 'ingredients' (linea 6)
-    private store: Store<fromShoppingList.AppState>
+    private store: Store<fromApp.AppState>
   ) { }
 
   ngOnInit() {

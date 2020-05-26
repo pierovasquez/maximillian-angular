@@ -4,9 +4,8 @@ import { Ingredient } from 'src/app/models/ingredients.model';
 import { ShoppingListService } from '../shopping/shopping-list/shopping-list.service';
 import { Subject, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { ShoppingListInitialState } from '../shopping/shopping-list/store/shopping-list.reducer';
 import * as ShoppingListActions from '../shopping/shopping-list/store/shopping-list.actions';
-import * as fromShoppingList from '../shopping/shopping-list/store/shopping-list.reducer';
+import * as fromApp from '../../core/store/app.reducer';
 @Injectable()
 export class RecipesService {
 
@@ -28,7 +27,7 @@ export class RecipesService {
 
     constructor(
         private sslService: ShoppingListService,
-        private store: Store<fromShoppingList.AppState>
+        private store: Store<fromApp.AppState>
     ) { }
 
     addRecipe(recipe: Recipe) {
