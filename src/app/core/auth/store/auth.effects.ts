@@ -8,10 +8,12 @@ import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
 
 const handleAuthentication = (resData: LoginResponseData | AuthResponseData) => {
   const expirationDate = new Date(new Date().getTime() + +resData.expiresIn * 1000);
   const loggedUser = new User(resData.email, resData.localId, resData.idToken, expirationDate);
+  localStorage.setItem('userData', JSON.stringify(loggedUser));
   return new AuthActions.AuthenticateSuccess(loggedUser);
 };
 
@@ -54,6 +56,7 @@ export class AuthEffects {
       // tslint:disable-next-line: max-line-length
       return this.http.post<LoginResponseData>(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.firebaseAPIKey}`, updatedUser)
         .pipe(
+          tap(resData => this.authService.setLogoutTimer(+resData.expiresIn)),
           map(resData => {
             // map() retorna un observable automaticamente. Si retornasemos un of() estariamos retornando un Observable dentro de otro
             return handleAuthentication(resData);
@@ -79,6 +82,7 @@ export class AuthEffects {
       // tslint:disable-next-line: max-line-length
       return this.http.post<AuthResponseData>(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.firebaseAPIKey}`, updatedUser)
         .pipe(
+          tap(resData => this.authService.setLogoutTimer(+resData.expiresIn * 1000)),
           map(resData => {
             // map() retorna un observable automaticamente. Si retornasemos un of() estariamos retornando un Observable dentro de otro
             return handleAuthentication(resData);
@@ -95,9 +99,53 @@ export class AuthEffects {
   // Este Effect no lanza ningun dispatch como lo hace el anterior puesto que solo queremos que navegue hacia una cierta ruta
   // Para que no de errores e indiquemos que no dispondremos de ningun dispatch tenemos que rellenar el @Effect()
   @Effect({ dispatch: false })
-  authSuccess = this.actions$.pipe(ofType(AuthActions.AUTHENTICATE_SUCCESS), tap(() => {
-    this.router.navigate(['/']);
-  }));
+  authRedirect = this.actions$.pipe(
+    ofType(AuthActions.AUTHENTICATE_SUCCESS, AuthActions.LOGOUT),
+    tap(() => this.router.navigate(['/']))
+  );
+
+  @Effect()
+  authAutoLogin = this.actions$.pipe(
+    ofType(AuthActions.AUTO_LOGIN),
+    map(() => {
+      // TODO preguntar por que se tiene que guardar todo el objeto del usuario en el localStorage
+      const userData: {
+        email: string;
+        id: string;
+        _token: string;
+        _tokenExpirationDate: string;
+      } = JSON.parse(localStorage.getItem('userData'));
+      if (!userData) {
+        return { type: 'DUMMY' };
+      }
+
+      const loadedUser = new User(userData.email, userData.id, userData._token, new Date(userData._tokenExpirationDate));
+
+      // Si el token sigue siendo valido, (la fecha del token no es mayor a la fecha actual), logeara el usuario.
+      if (loadedUser.token) {
+        const expirationDuration = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
+        this.authService.setLogoutTimer(expirationDuration);
+        return new AuthActions.AuthenticateSuccess(loadedUser);
+        // this.autoLogOut(expirationDuration);
+      }
+      return { type: 'DUMMY' };
+    })
+  );
+
+
+  @Effect({ dispatch: false })
+  authLogOut = this.actions$.pipe(
+    ofType(AuthActions.LOGOUT),
+    tap(() => {
+      this.authService.clearLogoutTimer();
+      localStorage.removeItem('userData');
+      this.router.navigate(['/auth']);
+    })
+  );
+
+
+
+
 
   // Se utiliza $ para declarar que es un observable dentro de los Ngrx Effects
   // actions$ es un observable que se subscribe a los displatch del store de ngrx.
@@ -106,7 +154,8 @@ export class AuthEffects {
   constructor(
     private actions$: Actions,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) { }
 }
 
