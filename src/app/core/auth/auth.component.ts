@@ -1,13 +1,13 @@
-import { Component, OnInit, ComponentFactoryResolver, ViewChild } from '@angular/core';
+import { Component, OnInit, ComponentFactoryResolver, ViewChild, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthUser } from 'src/app/models/user.model';
 import { AuthService } from './auth.service';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { AuthResponseData, LoginResponseData } from 'src/app/models/authResponse.model';
 import { Router } from '@angular/router';
 import { AlertModelComponent } from 'src/app/shared/components/alert-model/alert-model.component';
 import { PlaceholderDirective } from 'src/app/shared/directives/placeholder/placeholder.directive';
-import { take } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 import * as fromApp from '../store/app.reducer';
 import * as AuthActions from './store/auth.actions';
 import { Store } from '@ngrx/store';
@@ -18,13 +18,15 @@ import { Store } from '@ngrx/store';
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss']
 })
-export class AuthComponent implements OnInit {
+export class AuthComponent implements OnInit, OnDestroy {
 
-  @ViewChild(PlaceholderDirective, {static: false}) alertHost: PlaceholderDirective;
+  @ViewChild(PlaceholderDirective, { static: false }) alertHost: PlaceholderDirective;
 
   public isLoginMode = true;
   public isLoading = false;
   public error: string = null;
+
+  private $ngUnsubscribe = new Subject<void>();
 
   constructor(
     private authService: AuthService,
@@ -34,7 +36,7 @@ export class AuthComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.store.select('auth').subscribe(authState => {
+    this.store.select('auth').pipe(takeUntil(this.$ngUnsubscribe)).subscribe(authState => {
       this.isLoading = authState.loading;
       this.error = authState.authError;
       if (this.error) {
@@ -43,15 +45,22 @@ export class AuthComponent implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+    this.$ngUnsubscribe.next();
+    this.$ngUnsubscribe.complete();
+  }
+
   onSubmit(form: NgForm) {
     if (!form.valid) {
       return;
+    }
+    const newUser = this.generateNewUserAndSetValues(form.value);
+    if (this.isLoginMode) {
+      this.store.dispatch(new AuthActions.LoginStart(newUser));
     } else {
-      this.isLoading = true;
-      const newUser = this.generateNewUserAndSetValues(form.value);
-      const authObservable: Observable<AuthResponseData | LoginResponseData> = this.setAuthObservable(newUser);
-
-      // authObservable.subscribe(resData => {
+      this.store.dispatch(new AuthActions.SignUpStart(newUser));
+    }
+    // authObservable.subscribe(resData => {
       //   console.log('resData', resData);
       //   this.isLoading = false;
       //   this.router.navigate(['/recipes']);
@@ -62,8 +71,8 @@ export class AuthComponent implements OnInit {
       //     this.showErrorAlert(errorMessage);
       //     this.isLoading = false;
       //   });
-      form.reset();
-    }
+    form.reset();
+
   }
 
   private generateNewUserAndSetValues(formValue): AuthUser {
@@ -71,14 +80,6 @@ export class AuthComponent implements OnInit {
     newUser.email = formValue.email;
     newUser.password = formValue.password;
     return newUser;
-  }
-  private setAuthObservable(newUser: AuthUser): Observable<AuthResponseData | LoginResponseData> {
-    if (!this.isLoginMode) {
-      return this.authService.signUp(newUser);
-    } else {
-      // return this.authService.login(newUser);
-      this.store.dispatch(new AuthActions.LoginStart(newUser));
-    }
   }
 
   private showErrorAlert(message: string) {

@@ -3,11 +3,37 @@ import { Actions, ofType, Effect } from '@ngrx/effects';
 import * as AuthActions from './auth.actions';
 import { switchMap, catchError, map, tap } from 'rxjs/operators';
 import { AuthUser, User } from 'src/app/models/user.model';
-import { LoginResponseData } from 'src/app/models/authResponse.model';
+import { LoginResponseData, AuthResponseData } from 'src/app/models/authResponse.model';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
+
+const handleAuthentication = (resData: LoginResponseData | AuthResponseData) => {
+  const expirationDate = new Date(new Date().getTime() + +resData.expiresIn * 1000);
+  const loggedUser = new User(resData.email, resData.localId, resData.idToken, expirationDate);
+  return new AuthActions.AuthenticateSuccess(loggedUser);
+};
+
+const handleError = (error) => {
+  let errorMessage = 'An unknown error ocurred!';
+  if (error.error && error.error.error) {
+    switch (error.error.error.message) {
+      case 'EMAIL_EXISTS':
+        errorMessage = 'This email exists already';
+        break;
+      case 'EMAIL_NOT_FOUND':
+        errorMessage = 'This email does not exist';
+        break;
+      case 'INVALID_PASSWORD':
+        errorMessage = 'This password is not correct';
+        break;
+      default:
+        break;
+    }
+  }
+  return of(new AuthActions.AuthenticateFail(errorMessage));
+};
 
 // Injectable() solo es necesario porque en el constructor utilizamos HttpClient
 @Injectable()
@@ -30,38 +56,41 @@ export class AuthEffects {
         .pipe(
           map(resData => {
             // map() retorna un observable automaticamente. Si retornasemos un of() estariamos retornando un Observable dentro de otro
-            const expirationDate = new Date(new Date().getTime() + +resData.expiresIn * 1000);
-            const loggedUser = new User(resData.email, resData.localId, resData.idToken, expirationDate);
-            return new AuthActions.AuthenticateSuccess(loggedUser);
+            return handleAuthentication(resData);
           }),
           catchError(error => {
             // Lo que tenemos que retornar dentro del of() es nuestra nueva accion sin necesidad de utilizar la funcion dispatch del store
             // ya que @Effect() se encargara de ello.
-
-            let errorMessage = 'An unknown error ocurred!';
-            if (error.error && error.error.error) {
-              switch (error.error.error.message) {
-                case 'EMAIL_EXISTS':
-                  errorMessage = 'This email exists already';
-                  break;
-                case 'EMAIL_NOT_FOUND':
-                  errorMessage = 'This email does not exist';
-                  break;
-                case 'INVALID_PASSWORD':
-                  errorMessage = 'This password is not correct';
-                  break;
-                default:
-                  break;
-              }
-            }
-            return of(new AuthActions.AuthenticateFail(errorMessage));
+            return handleError(error);
           })
         );
     }),
   );
 
   @Effect()
-  authSignUp = this.actions$.pipe(ofType(AuthActions.SIGN_UP_START));
+  authSignUp = this.actions$.pipe(
+    ofType(AuthActions.SIGN_UP_START),
+    switchMap((signUpAction: AuthActions.SignUpStart) => {
+      const user = signUpAction.payload;
+      const updatedUser: AuthUser = {
+        ...user,
+        returnSecureToken: true
+      };
+      // tslint:disable-next-line: max-line-length
+      return this.http.post<AuthResponseData>(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.firebaseAPIKey}`, updatedUser)
+        .pipe(
+          map(resData => {
+            // map() retorna un observable automaticamente. Si retornasemos un of() estariamos retornando un Observable dentro de otro
+            return handleAuthentication(resData);
+          }),
+          catchError(error => {
+            // Lo que tenemos que retornar dentro del of() es nuestra nueva accion sin necesidad de utilizar la funcion dispatch del store
+            // ya que @Effect() se encargara de ello.
+            return handleError(error);
+          })
+        );
+    })
+  );
 
   // Este Effect no lanza ningun dispatch como lo hace el anterior puesto que solo queremos que navegue hacia una cierta ruta
   // Para que no de errores e indiquemos que no dispondremos de ningun dispatch tenemos que rellenar el @Effect()
