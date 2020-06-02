@@ -9,7 +9,8 @@ export class User {
     public email: string,
     public id: string,
     private _token: string,
-    private _tokenExpirationDate: Date
+    private _tokenExpirationDate: Date,
+    public redirect?: boolean
   ) { }
 
   get token() {

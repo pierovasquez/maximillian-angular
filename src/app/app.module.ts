@@ -12,6 +12,7 @@ import * as fromApp from './core/store/app.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from './core/auth/store/auth.effects';
 import { environment } from 'src/environments/environment';
+import { RecipeEffects } from './components/recipes/store/recipe.effects';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,7 @@ import { environment } from 'src/environments/environment';
     // Tenemos que indicar que reducers estamos utilizando. El nombre 'shoppingList' es totalmente custom.
     StoreModule.forRoot(fromApp.appReducer),
     // Se pasara un array de los efectos (@Effects())
-    EffectsModule.forRoot([AuthEffects]),
+    EffectsModule.forRoot([AuthEffects, RecipeEffects]),
     StoreDevtoolsModule.instrument({ logOnly: environment.production }),
     StoreRouterConnectingModule.forRoot()
   ],

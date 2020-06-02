@@ -12,7 +12,7 @@ import { AuthService } from '../auth.service';
 
 const handleAuthentication = (resData: LoginResponseData | AuthResponseData) => {
   const expirationDate = new Date(new Date().getTime() + +resData.expiresIn * 1000);
-  const loggedUser = new User(resData.email, resData.localId, resData.idToken, expirationDate);
+  const loggedUser = new User(resData.email, resData.localId, resData.idToken, expirationDate, true);
   localStorage.setItem('userData', JSON.stringify(loggedUser));
   return new AuthActions.AuthenticateSuccess(loggedUser);
 };
@@ -101,7 +101,11 @@ export class AuthEffects {
   @Effect({ dispatch: false })
   authRedirect = this.actions$.pipe(
     ofType(AuthActions.AUTHENTICATE_SUCCESS, AuthActions.LOGOUT),
-    tap(() => this.router.navigate(['/']))
+    tap((authSuccessACtion: AuthActions.AuthenticateSuccess) => {
+      if (authSuccessACtion.payload.redirect) {
+        this.router.navigate(['/']);
+      }
+    })
   );
 
   @Effect()
@@ -119,7 +123,7 @@ export class AuthEffects {
         return { type: 'DUMMY' };
       }
 
-      const loadedUser = new User(userData.email, userData.id, userData._token, new Date(userData._tokenExpirationDate));
+      const loadedUser = new User(userData.email, userData.id, userData._token, new Date(userData._tokenExpirationDate), false);
 
       // Si el token sigue siendo valido, (la fecha del token no es mayor a la fecha actual), logeara el usuario.
       if (loadedUser.token) {

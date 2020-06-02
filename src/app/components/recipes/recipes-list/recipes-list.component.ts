@@ -20,7 +20,6 @@ export class RecipesListComponent implements OnInit, OnDestroy {
   filteredText = '';
 
   constructor(
-    private recipesService: RecipesService,
     private router: Router,
     private route: ActivatedRoute,
     private store: Store<fromApp.AppState>
@@ -28,7 +27,7 @@ export class RecipesListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.recipeSubscription = this.store.select('recipes').pipe(map(re => re.recipes)).subscribe(recipes => this.recipes = recipes);
-    this.recipes = this.recipesService.getRecipes();
+    // this.recipes = this.recipesService.getRecipes();
   }
 
   ngOnDestroy() {
