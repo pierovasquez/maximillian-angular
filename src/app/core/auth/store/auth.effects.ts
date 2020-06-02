@@ -56,7 +56,7 @@ export class AuthEffects {
       // tslint:disable-next-line: max-line-length
       return this.http.post<LoginResponseData>(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.firebaseAPIKey}`, updatedUser)
         .pipe(
-          tap(resData => this.authService.setLogoutTimer(+resData.expiresIn)),
+          tap(resData => this.authService.setLogoutTimer(+resData.expiresIn * 1000)),
           map(resData => {
             // map() retorna un observable automaticamente. Si retornasemos un of() estariamos retornando un Observable dentro de otro
             return handleAuthentication(resData);

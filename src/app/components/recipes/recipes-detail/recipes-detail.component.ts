@@ -2,8 +2,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Recipe } from 'src/app/models/recipe.model';
 import { RecipesService } from '../recipes.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { map, tap, switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import * as fromApp from '../../../core/store/app.reducer';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-recipes-detail',
@@ -20,14 +22,17 @@ export class RecipesDetailComponent implements OnInit, OnDestroy {
   constructor(
     private recipeService: RecipesService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private store: Store<fromApp.AppState>
   ) { }
 
   ngOnInit() {
     this.route.paramMap.pipe(
       map(params => params.get('id')),
       tap(id => this.id = +id),
-      map(id => this.recipeService.getRecipe(+id))
+      switchMap(id => {
+        return this.store.select('recipes').pipe(map(re => re.recipes.find((recipe, index) => index === this.id)));
+      })
     ).subscribe((res: Recipe) => this.recipe = res);
   }
 
