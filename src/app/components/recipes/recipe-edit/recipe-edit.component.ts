@@ -3,10 +3,10 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { takeUntil, map } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { FormGroup, FormControl, NgForm, FormArray, Validators } from '@angular/forms';
-import { RecipesService } from '../recipes.service';
 import { Recipe } from 'src/app/models/recipe.model';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../../core/store/app.reducer';
+import * as RecipesActions from '../store/recipe.actions';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -21,7 +21,6 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
   recipeForm: FormGroup;
   constructor(
     private route: ActivatedRoute,
-    private recipeService: RecipesService,
     private router: Router,
     private store: Store<fromApp.AppState>
   ) { }
@@ -40,9 +39,11 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
     const { name, description, imagePath, ingredients } = this.recipeForm.getRawValue();
     const newRecipe = new Recipe(name, description, imagePath, ingredients);
     if (this.editMode) {
-      this.recipeService.updateRecipe(this.id, newRecipe);
+      this.store.dispatch(new RecipesActions.UpdateRecipe({ index: this.id, newRecipe }));
+      // this.recipeService.updateRecipe(this.id, newRecipe);
     } else {
-      this.recipeService.addRecipe(newRecipe);
+      this.store.dispatch(new RecipesActions.AddRecipe(newRecipe));
+      // this.recipeService.addRecipe(newRecipe);
     }
     this.onCancel();
   }
@@ -72,7 +73,10 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
 
     if (this.editMode) {
       // const recipe = this.recipeService.getRecipe(this.id);
-      this.store.select('recipes').pipe(map(re => re.recipes.find((recipe, index) => index === this.id))).subscribe(recipe => {
+      this.store.select('recipes').pipe(
+        takeUntil(this.ngUnsubscribe),
+        map(re => re.recipes.find((recipe, index) => index === this.id)),
+      ).subscribe(recipe => {
         recipeName = recipe.name;
         recipeImagePath = recipe.imagePath;
         recipeDescription = recipe.description;

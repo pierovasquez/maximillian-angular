@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Ingredient } from 'src/app/models/ingredients.model';
-import { ShoppingListService } from '../shopping-list/shopping-list.service';
 import { NgForm } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -23,7 +22,6 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   public editMode = false;
   public editedItem: Ingredient;
   constructor(
-    private shoppingListService: ShoppingListService,
     private store: Store<fromApp.AppState>
   ) { }
 

@@ -30,8 +30,6 @@ import { AuthInterceptorService } from './auth/auth-interceptor.service';
     HeaderComponent
   ],
   providers: [
-    RecipesService,
-    ShoppingListService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptorService,
