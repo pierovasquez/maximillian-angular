@@ -20,7 +20,7 @@ import { RecipeEffects } from './components/recipes/store/recipe.effects';
   ],
   imports: [
     // Cuando se aplica lazy loading, no es necesario importar los modulos de los cuales se esta utilizando
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AppRoutingModule,
     HttpClientModule,
     CoreModule,
