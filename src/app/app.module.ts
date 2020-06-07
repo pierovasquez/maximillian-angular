@@ -13,6 +13,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from './core/auth/store/auth.effects';
 import { environment } from 'src/environments/environment';
 import { RecipeEffects } from './components/recipes/store/recipe.effects';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { RecipeEffects } from './components/recipes/store/recipe.effects';
   imports: [
     // Cuando se aplica lazy loading, no es necesario importar los modulos de los cuales se esta utilizando
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     CoreModule,

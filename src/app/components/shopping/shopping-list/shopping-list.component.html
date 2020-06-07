@@ -2,8 +2,9 @@
 <button (click)="onAnimate()"><span>Animate!</span></button>
 <button (click)="onShrink()"><span>Shrink!</span></button>
 <div class="shopping_list_container">
-  <div style="width: 100px; height: 100px;" [@divState]="state">
-  </div>
+  <div style="width: 100px; height: 100px;" [@divState]="state"></div>
+    <br>
+  <div style="width: 100px; height: 100px;" [@wildState]="wildState"></div>
   <a class="shopping_list_link" (click)="onEditItem(i)" *ngFor="let ingredient of (ingredients | async).ingredients; let i = index">
     {{ingredient.name}} ({{ingredient.amount}})
   </a>
