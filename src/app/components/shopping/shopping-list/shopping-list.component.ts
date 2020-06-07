@@ -32,10 +32,22 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
       })),
       state('shrunken', style({
         'background-color': 'green',
-        transform: 'translateX(100px) scale(0.5)'
+        transform: 'translateX(0) scale(0.5)'
       })),
       transition('normal <=> highlighted', animate(300)),
-      transition('shrunken <=> *', animate(300))
+      transition('shrunken <=> *', [
+        // Al poner este codigo indicamos el valor inicial al cliclar en 'Shrink' que es background-color: 'orange'
+        // Despues sigue con una animacion del borde por un segundo, y el resto de animacion para llegar al punto final
+        // * (wildcard) se ejecutara en una animacion de 500 milisegundos
+        style({
+          'background-color': 'orange',
+          'border-radius': '0px'
+        }),
+        animate(1000, style({
+          'border-radius': '50px'
+        })),
+        animate(500)
+      ])
     ])
   ]
 })
