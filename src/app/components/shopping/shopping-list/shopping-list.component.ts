@@ -4,12 +4,27 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import * as ShoppingListActions from './store/shopping-list.actions';
 import * as fromApp from '../../../core/store/app.reducer';
+import { trigger, state, style } from '@angular/animations';
 @Component({
   selector: 'app-shopping-list',
   templateUrl: './shopping-list.component.html',
-  styleUrls: ['./shopping-list.component.scss']
+  styleUrls: ['./shopping-list.component.scss'],
+  animations: [
+    trigger('divState', [
+      state('normal', style({
+        'background-color': 'red',
+        transform: 'translateX(0)'
+      })),
+      state('highlighted', style({
+        'background-color': 'blue',
+        transform: 'translateX(100px)'
+      }))
+    ])
+  ]
 })
 export class ShoppingListComponent implements OnInit, OnDestroy {
+
+  state = 'normal';
 
   ingredients: Observable<{ingredients: Ingredient[]}>;
 
@@ -33,6 +48,14 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   onEditItem(index: number) {
     this.store.dispatch(new ShoppingListActions.StartEdit(index));
     // this.shoppingListService.emitNewValueStartEditing(index);
+  }
+
+  onAnimate() {
+    this.state === 'normal' ? this.state = 'highlighted' : this.state = 'normal'
+  }
+
+  onShrink() {
+
   }
 
 }
