@@ -14,6 +14,8 @@ import { AuthEffects } from './core/auth/store/auth.effects';
 import { environment } from 'src/environments/environment';
 import { RecipeEffects } from './components/recipes/store/recipe.effects';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment as AppEnvironment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     // Se pasara un array de los efectos (@Effects())
     EffectsModule.forRoot([AuthEffects, RecipeEffects]),
     StoreDevtoolsModule.instrument({ logOnly: environment.production }),
-    StoreRouterConnectingModule.forRoot()
+    StoreRouterConnectingModule.forRoot(),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: AppEnvironment.production })
   ],
   bootstrap: [AppComponent]
 })
