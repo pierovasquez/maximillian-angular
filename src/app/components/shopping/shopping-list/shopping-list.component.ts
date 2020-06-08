@@ -48,7 +48,27 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
         })),
         animate(500)
       ])
-    ])
+    ]),
+    trigger('list1', [
+      state('in', style({
+        opacity: 1,
+        transform: 'translateX(0)'
+      })),
+      // void es un estado reservado que indica si el estado final de un elemento no esta añadido al DOM
+      transition('void => *', [
+        style({
+          opacity: 0,
+          transform: 'translateX(-100px)'
+        }),
+        animate(300)
+      ]),
+      transition('* => void', [
+        animate(300, style({
+          transform: 'translateX(100px)',
+          opacity: 0
+        }))
+      ])
+    ]),
   ]
 })
 export class ShoppingListComponent implements OnInit, OnDestroy {
