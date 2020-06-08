@@ -11,4 +11,11 @@
     *ngFor="let ingredient of (ingredients | async).ingredients; let i = index">
     {{ingredient.name}} ({{ingredient.amount}})
   </a>
+  <br>
+  <a class="shopping_list_link" 
+    (click)="onEditItem(i)" 
+    [@list2]
+    *ngFor="let ingredient of (ingredients | async).ingredients; let i = index">
+    {{ingredient.name}} ({{ingredient.amount}})
+  </a>
 </div>
