@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import * as ShoppingListActions from './store/shopping-list.actions';
 import * as fromApp from '../../../core/store/app.reducer';
-import { trigger, state, style, transition, animate, keyframes } from '@angular/animations';
+import { trigger, state, style, transition, animate, keyframes, group } from '@angular/animations';
 @Component({
   selector: 'app-shopping-list',
   templateUrl: './shopping-list.component.html',
@@ -101,10 +101,17 @@ import { trigger, state, style, transition, animate, keyframes } from '@angular/
         ]))
       ),
       transition('* => void', [
-        animate(300, style({
-          transform: 'translateX(100px)',
-          opacity: 0
-        }))
+        // Utilizamos el group para animar simultaneamente dos animaciones.
+        group([
+          animate(300, style({
+            color: 'red',
+            opacity: 0
+          })),
+          animate(800, style({
+            transform: 'translateX(100px)',
+            opacity: 0
+          }))
+        ])
       ])
     ]),
   ]
